@@ -377,6 +377,8 @@ class Game {
 
     if (this.state === 'playing' || this.state === 'paused' || this.state === 'upgrade') {
       drawHud(ctx, this);
+    }
+    if (this.state === 'playing' || this.state === 'paused') {
       drawWaveAnnounce(ctx, this.waves.announced, this.waves.announceTime / 2.2);
     }
     if (this.state === 'paused') drawPause(ctx);
@@ -398,6 +400,8 @@ function stage(game, shot, seed) {
   if (shot === 'start') {
     game.state = 'title';
     game.best = 2450;
+    game.time = Math.PI / 6; // Begin prompt at full brightness.
+    game.frozen = true;
     return;
   }
   game.startRun();
@@ -439,6 +443,8 @@ function stage(game, shot, seed) {
     game.enemies = [];
     game.waves.queue = [];
     game.choices = rollChoices(game.player, game.star);
+    game.waves.announced = '';
+    game.waves.announceTime = 0;
     game.state = 'upgrade';
     game.frozen = true;
   } else if (shot === 'end') {
